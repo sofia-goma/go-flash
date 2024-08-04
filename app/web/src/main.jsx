@@ -10,6 +10,7 @@ import Register from './pages/Register.jsx';
 import OpenStreetMap from './components/OpenStreetMap.jsx';
 import About from './pages/About.jsx';
 import 'leaflet/dist/leaflet.css';
+import PrivateRoute from './routes/PrivateRoute.jsx';
 
 
 const router = createBrowserRouter([
@@ -31,7 +32,13 @@ const router = createBrowserRouter([
       },
       {
         path: '/activities',
-        element: <OpenStreetMap />
+        element: <PrivateRoute />,
+        children: [
+          {
+            path: '/activities',
+            element: <OpenStreetMap />
+          }
+        ]
       }
     ]
   },

@@ -5,8 +5,15 @@ import cors from 'cors';
 const router = Router();
 
 
+// const corsOptions = {
+//    origin: 'http://localhost:5173', // your frontend's URL
+//    optionsSuccessStatus: 200
+//  };
+ 
+//  app.use(cors(corsOptions));
+
+router.route('/login').post(loginUser);
 router.route('/register').post(registerUser);
-router.route('/login').post([cors(), loginUser]);
-router.get('/', authenticateToken, authorizeRole('ADMIN'), getAllUsers);
+// router.get('/allusers', authenticateToken, authorizeRole('ADMIN'), getAllUsers);
 //router.get('/', getAllUsers);
 export default router;

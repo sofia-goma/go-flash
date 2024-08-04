@@ -12,21 +12,22 @@ export default function Login() {
 
   const onSubmit = async (data) => {
     const { email, password, remember } = data;
-    const headersList = {
-      "Accept": "*/*",
-      "Content-Type": "application/json"
-    };
-
     try {
       const response = await axios.post(`${appConfig.BACKEND_API_URL}/api/users/login`, {
         email, password
-      }, { headers: headersList });
+      });
       const result = await response.data;
-      console.log(result);
-
-      // toast.success("Registration successful");
-      // navigate('/login');
-
+      localStorage.clear();
+      sessionStorage.clear();
+      if (!remember) {
+        sessionStorage.setItem('accessToken', result.accessToken);
+        toast.success("Login successfull");
+        navigate('/activities');
+        return;
+      }
+      localStorage.setItem('accessToken', result.accessToken);
+      toast.success("Login successful");
+      navigate('/');
     } catch (error) {
       toast.error(error.message);
     }
