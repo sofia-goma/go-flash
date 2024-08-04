@@ -1,0 +1,79 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// status
+
+enum Status {
+  ENATTENTE
+  ACCEPTE
+  TERMINE
+}
+
+// role
+
+enum Role {
+  ADMIN
+  CLIENT 
+  CHAUFFEUR
+}
+
+// utilisateur
+
+model Utilisateur {
+  id String @id @unique @default(uuid())
+  prenom String
+  email String
+  password String
+  role Role @default(CLIENT)
+  @@map("utilisateur")
+}
+
+model Taxi {
+  id String @id @unique @default(uuid())
+  chauffeurId String @map("chauffeur_id")
+  disponibilite Boolean @default(false)
+  location String
+
+
+  Commande Commande[]
+
+  @@map("taxi")
+}
+
+
+model Commande {
+  id String @id @unique @default(uuid())
+  clientId String @map("client_id")
+  taxiId String @map("taxi_id")
+  dateCommande DateTime @map("date_commande") @default(now())
+  status Status @default(ENATTENTE)
+  taxi Taxi @relation(fields: [taxiId], references: [id])
+  Historique Historique[]
+  @@map("commande")
+}
+
+
+model Historique {
+  id String @id @unique @default(uuid())
+  chauffeurId String
+  clientId String @map("client_id")
+  commandeId String @map("commande_id")
+  dateCourse DateTime
+
+
+  commande Commande @relation(fields: [commandeId], references: [id])
+
+  @@map("historique")
+}
