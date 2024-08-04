@@ -47,7 +47,6 @@ const OpenStreetMap = () => {
 
   return (
     <div className="pharmacy-locator-container">
-      <h1 className="text-3xl font-bold text-center my-4">Localisateur de Pharmacie à Goma</h1>
       {location ? (
         <MapContainer center={[location.latitude, location.longitude]} zoom={13} style={{ height: "600px", width: "100%" }}>
           <TileLayer
