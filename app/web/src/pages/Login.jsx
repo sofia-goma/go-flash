@@ -1,14 +1,35 @@
-import React from 'react';
 import { useForm } from 'react-hook-form';
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
+import appConfig from '../config/app.config';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Login() {
   const { register, handleSubmit, formState: { errors } } = useForm();
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
-  const onSubmit = (data) => {
-    console.log(data);
-    // navigate('/');
+  const onSubmit = async (data) => {
+    const { email, password, remember } = data;
+    const headersList = {
+      "Accept": "*/*",
+      "Content-Type": "application/json"
+    };
+
+    try {
+      const response = await axios.post(`${appConfig.BACKEND_API_URL}/api/users/login`, {
+        email, password
+      }, { headers: headersList });
+      const result = await response.data;
+      console.log(result);
+
+      // toast.success("Registration successful");
+      // navigate('/login');
+
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   return (
@@ -72,14 +93,15 @@ export default function Login() {
               </button>
               <div className="text-sm font-medium text-black-900">
                 Not registered yet?{' '}
-                <a href="#" className="text-blue-600 hover:underline">
+                <Link to="/register" className="text-blue-600 hover:underline">
                   Create account
-                </a>
+                </Link>
               </div>
             </form>
           </div>
         </div>
       </div>
+      <ToastContainer />
     </section>
   );
 };
