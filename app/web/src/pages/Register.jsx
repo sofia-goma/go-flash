@@ -31,7 +31,7 @@ export default function Register() {
          console.log(result);
 
          toast.success("Registration successful");
-         navigate('/login');
+         navigate('/app');
 
       } catch (error) {
          toast.error(error.message);
@@ -132,7 +132,7 @@ export default function Register() {
                         </div>
                         <hr className="mb-6 border-t" />
                         <div className="text-center">
-                           <Link className="inline-block text-sm text-blue-500 align-baseline hover:text-blue-800" to="/login">
+                           <Link className="inline-block text-sm text-blue-500 align-baseline hover:text-blue-800" to="/">
                               Already have an account? Login!
                            </Link>
                         </div>

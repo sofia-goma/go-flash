@@ -12,6 +12,17 @@ L.Icon.Default.mergeOptions({
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
 });
 
+// Custom icon for user's current location
+const userLocationIcon = new L.Icon({
+  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png', // Replace with your custom icon URL
+  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+  shadowSize: [41, 41]
+});
+
 const OpenStreetMap = () => {
   const [location, setLocation] = useState(null);
   const [pharmacies, setPharmacies] = useState([]);
@@ -31,20 +42,6 @@ const OpenStreetMap = () => {
     );
   }, []);
 
-  useEffect(() => {
-    if (location) {
-      // Remplacez cette URL par l'URL de l'API Nominatim pour obtenir les pharmacies à Goma
-      fetch(`https://nominatim.openstreetmap.org/search?format=json&q=pharmacy in Goma&limit=10`)
-        .then((response) => response.json())
-        .then((data) => {
-          setPharmacies(data);
-        })
-        .catch((error) => {
-          console.error("Erreur lors de la récupération des pharmacies : ", error);
-        });
-    }
-  }, [location]);
-
   return (
     <div className="pharmacy-locator-container">
       {location ? (
@@ -53,6 +50,11 @@ const OpenStreetMap = () => {
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           />
+          <Marker position={[location.latitude, location.longitude]} icon={userLocationIcon}>
+            <Popup>
+              <h2 className="text-xl font-semibold">You are here</h2>
+            </Popup>
+          </Marker>
           {pharmacies.map((pharmacy, index) => (
             <Marker key={index} position={[pharmacy.lat, pharmacy.lon]}>
               <Popup>
@@ -62,7 +64,13 @@ const OpenStreetMap = () => {
           ))}
         </MapContainer>
       ) : (
-        <p className="text-center">Obtention de votre localisation...</p>
+        (
+          <>
+            <div class="flex justify-center items-center h-screen">
+              <div class="rounded-full h-20 w-20 bg-black animate-ping"></div>
+            </div>
+          </>
+        )
       )}
     </div>
   );

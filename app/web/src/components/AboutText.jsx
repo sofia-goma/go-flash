@@ -3,7 +3,7 @@ import image from "../assets/image.png"
 
 const AboutText = () => {
   return (
-    <div className="md:flex md:flex-col ms:flex-row  justify-center items-center p-8 text-lg mt-7">
+    <div className="md:flex md:flex-col ms:flex-row  justify-center items-center p-8 text-lg">
       <div className='md:flex gap-10 pb-10'>
         <div className='flex justify-center items-center w-96 h-60 bg-black bg-opacity-50 hover:bg-opacity-75 transition duration-300 ease-in-out'> 
             <img src={image} alt="AbotImage" className="w-64 h-40 " />

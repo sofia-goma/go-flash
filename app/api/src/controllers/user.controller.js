@@ -36,10 +36,25 @@ export const loginUser = async (req, res) => {
   } else {
     res.sendStatus(401);
   }
-    
+
 };
 
 export const getAllUsers = async (req, res) => {
   const users = await prisma.utilisateur.findMany();
   res.json(users);
 };
+
+export const remove = async (req, res) => {
+  const { id } = req.params;
+  try {
+    await prisma.utilisateur.delete({ where: { id } });
+    res.send('User deleted successfully');
+  } catch (error) {
+    res.status(400).json({
+      message: "Bad request",
+      error: error.message
+    })
+  } finally {
+    await prisma.$disconnect();
+  }
+}
